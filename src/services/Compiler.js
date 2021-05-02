@@ -1,8 +1,14 @@
 const compile = async (codeValue, language = "c") => {
-    const url = process.env.BACK_URL + "/compiler/" + language;
+    const url = process.env.REACT_APP_BACK_URL + "/compiler/" + language;
 
-    const response = await fetch(url, codeValue);
-    return response.body;
+    let response = await fetch(url, {
+        method: 'POST',
+        body: codeValue,
+    });
+
+    response = await response.text();
+
+    return response;
 }
 
 module.exports ={
