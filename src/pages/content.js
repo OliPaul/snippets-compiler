@@ -33,12 +33,8 @@ const Content = () => {
                 }
                 
                 .content .code-blocks-container {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
                     width: 50%;
                     min-height: 100%;
-                    overflow: auto;
                 }
             `}</style>
         </Fragment>
