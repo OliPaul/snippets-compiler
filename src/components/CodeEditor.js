@@ -51,7 +51,7 @@ const CodeEditor = ({code}) => {
             />
             <style jsx>{`
                 .code-block-${code.id} {
-                    margin-bottom: 20px;
+                    margin: 0 auto 20px auto;
                     height: 100px !important;
                     border-radius: 5px;
                     overflow: scroll;
