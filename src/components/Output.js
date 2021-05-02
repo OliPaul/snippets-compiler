@@ -21,7 +21,7 @@ const Output = ({isOpen, onClose, content}) => {
                 .output {
                     position: fixed;
                     left: 0;
-                    bottom: 0;
+                    bottom: ${isOpen ? '0' : '-100px'};
                     right: 0;
                     height: 100px;
                     background-color: black;
