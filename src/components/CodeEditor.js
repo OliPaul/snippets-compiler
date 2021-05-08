@@ -11,7 +11,7 @@ import {compile} from "../services/Compiler";
 import DeleteSnippet from "./DeleteSnippet";
 import SnippetOutput from "./SnippetOutput";
 
-const CodeEditor = ({code}) => {
+const CodeEditor = ({key, code}) => {
 
     const [codeValue, setCodeValue] = useState(code.codeValue);
     const [output, setOutput] = useState("");
@@ -49,7 +49,7 @@ const CodeEditor = ({code}) => {
 
     return (
         <Fragment>
-            <div className={'code-block-' + code.id}>
+            <div key={key} className={'code-block-' + code.id}>
                 <AceEditor
                     mode={'c_cpp'}
                     placeholder="Allez, écris un beau snippet ! 🔥"

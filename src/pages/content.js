@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {useRecoilValue} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import CodeEditor from "../components/CodeEditor";
@@ -6,13 +6,17 @@ import CodeEditor from "../components/CodeEditor";
 const Content = () => {
 
     const codeValue = useRecoilValue(CodeAtom);
+    const [codeBlocks, setCodeBlocks] = useState(codeValue);
+
+    useEffect(() => setCodeBlocks(codeValue), [codeValue]);
+
     return (
         <Fragment>
             <div className={'content'}>
                 <div className={'code-blocks-container'}>
                     {
-                        codeValue.map((code) => (
-                            <CodeEditor code={code} />
+                        codeBlocks.map((code) => (
+                            <CodeEditor key={code.id} code={code} />
                         ))
                     }
                 </div>
