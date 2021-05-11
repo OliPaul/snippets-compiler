@@ -32,7 +32,7 @@ const Content = () => {
                     left: 0;
                     top: 130px;
                     padding-top: 20px; 
-                    overflow: scroll;
+                    overflow: auto;
                     z-index: 9;
                 }
                 
