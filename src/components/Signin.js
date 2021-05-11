@@ -40,7 +40,7 @@ const Signin = ({setToken}) => {
         const response = await signIn(credentialsData);
 
         if (response.error) {
-            setFormError("❌  Unable to register your account. \nPlease try again...");
+            setFormError("❌ Wrong Username/Password. Try again!");
             return;
         }
 
