@@ -1,12 +1,21 @@
 import React, {Fragment} from "react";
 import Toolbar from "./Toolbar";
+import {getUsername} from "../utils/Auth";
 
 const Header = () => {
+
+    const username = getUsername();
 
     return (
         <Fragment>
             <div className={'header'}>
-                <div className={'logo'}>Snippets Compiler</div>
+                <div className={'logo'}>
+                    <h2 className={'title'}>
+                        Snippets Compiler
+                        <span>{`Hey, ${username}! Amuse-toi 😎`}</span>
+                    </h2>
+
+                </div>
                 <div className={'toolbar-container'}>
                     <Toolbar />
                 </div>
@@ -31,6 +40,18 @@ const Header = () => {
                     font-size: 20px;
                     letter-spacing: 2px;
                     background-color: #009dc7;
+                }
+                
+                .title {
+                    font-size: 28px;
+                    text-align: center;
+                }
+                
+                .title span {
+                    display: block;
+                    font-family: Courier New, monospace;
+                    font-size: 12px;
+                    font-weight: 100
                 }
                 
                 .toolbar-container {
