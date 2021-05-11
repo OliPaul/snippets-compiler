@@ -79,7 +79,7 @@ const CodeEditor = ({key, code}) => {
                     margin: 20px auto 0 auto;
                     height: 100px !important;
                     border-radius: 5px 5px 0 0;
-                    overflow: scroll;
+                    overflow: auto;
                     width: fit-content;
                     position: relative;
                 }
@@ -92,20 +92,20 @@ const CodeEditor = ({key, code}) => {
                 
                 .delete-snippet-${code.id} {
                     color: red;
-                    font-size: 19px;
+                    font-size: 20px;
                     cursor: pointer;
                 }
                 
                 .code-block-${code.id} .play-snippet-${code.id} {
                     position: absolute;
                     top: 0;
-                    right: 5px;
+                    right: 10px;
                 }
                 
                 .code-block-${code.id} .delete-snippet-${code.id} {
                     position: absolute;
                     top: 0;
-                    right: 25px;
+                    right: 30px;
                 }
                 
                 .code-block-${code.id} #codeblock-${code.id} {
