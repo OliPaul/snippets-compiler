@@ -5,12 +5,14 @@ import {useRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import {compile} from "../services/Compiler"
 import Output from "./Output";
+import useToken from "./useToken";
 
 const Toolbar = () => {
 
     const [code, setCode] = useRecoilState(CodeAtom);
     const [openOutput, setOpenOutput] = useState(false);
     const [outputContent, setOutputContent] = useState("");
+    const { token, setToken } = useToken();
     const counterBlock = code.length;
 
     const handleAddBlock = () => {
@@ -32,7 +34,7 @@ const Toolbar = () => {
         // And join it with \n
         codeValue = codeValue.join("\n");
         //Send code to server for compilation
-        const response = await compile(codeValue);
+        const response = await compile(token, codeValue);
         setOutputContent(`Result: ${response}`);
 
     }

@@ -13,3 +13,9 @@ export const getUsername = () => {
     const username = userInfo.username;
     return username;
 }
+
+export const getToken = () => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    const token = userInfo.token;
+    return token;
+}

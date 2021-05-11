@@ -10,12 +10,14 @@ import RunSnippet from "./RunSnippet";
 import {compile} from "../services/Compiler";
 import DeleteSnippet from "./DeleteSnippet";
 import SnippetOutput from "./SnippetOutput";
+import useToken from "./useToken";
 
 const CodeEditor = ({key, code}) => {
 
     const [codeValue, setCodeValue] = useState(code.codeValue);
     const [output, setOutput] = useState("");
     const [codeAtom, setCodeAtom] = useRecoilState(CodeAtom);
+    const { token, setToken } = useToken();
     const index = codeAtom.findIndex((el) => el.id === code.id);
 
     const handleCodeChange = (value) => {
@@ -35,7 +37,7 @@ const CodeEditor = ({key, code}) => {
     const handleRunCode = async (code) => {
         setOutput("Compilation start...");
         //Send code to server for compilation
-        const response = await compile(code);
+        const response = await compile(token, code);
         setOutput(`Result: ${response}`);
 
     }
