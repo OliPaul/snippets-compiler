@@ -14,7 +14,7 @@ function App() {
 
     return (
         <RecoilRoot>
-            <Header />
+            <Header setToken={setToken} />
             <Content />
         </RecoilRoot>
     );

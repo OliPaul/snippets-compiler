@@ -1,10 +1,15 @@
 import React, {Fragment} from "react";
 import Toolbar from "./Toolbar";
 import {getUsername} from "../utils/Auth";
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 
-const Header = () => {
+const Header = ({setToken}) => {
 
     const username = getUsername();
+
+    const handleLogout = () => {
+        setToken(null);
+    }
 
     return (
         <Fragment>
@@ -12,7 +17,10 @@ const Header = () => {
                 <div className={'logo'}>
                     <h2 className={'title'}>
                         Snippets Compiler
-                        <span>{`Hey, ${username}! Amuse-toi 😎`}</span>
+                        <span>
+                            <PowerSettingsNewIcon className={'logout'} onClick={handleLogout} />
+                            | {`Hey, ${username}! Amuse-toi 😎`}
+                        </span>
                     </h2>
 
                 </div>
@@ -43,15 +51,21 @@ const Header = () => {
                 }
                 
                 .title {
-                    font-size: 28px;
+                    font-size: 30px;
                     text-align: center;
                 }
                 
                 .title span {
-                    display: block;
+                    display: flex;
+                    justify-content: center;
                     font-family: Courier New, monospace;
                     font-size: 12px;
-                    font-weight: 100
+                    font-weight: 100;
+                    margin-top: 10px
+                }
+                
+                .logout {
+                    cursor: pointer;
                 }
                 
                 .toolbar-container {
