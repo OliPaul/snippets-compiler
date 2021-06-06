@@ -1,4 +1,4 @@
-const projectRoute = process.env.REACT_APP_BACK_URL + "/api/projects";
+const projectRoute = process.env.REACT_APP_BACK_URL + "/projects";
 
 const createProject = async (token, projectName, language) => {
     const url = projectRoute;
@@ -51,7 +51,6 @@ const joinProject = async (token, projectToken) => {
     let response = await fetch(url, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
             "Authorization": `Bearer ${token}`
         },
     });
