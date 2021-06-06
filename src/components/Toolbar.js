@@ -1,29 +1,28 @@
 import React, {Fragment, useState} from "react";
-import Add from "@material-ui/icons/Add";
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Run from '@material-ui/icons/AccessTime';
 import {useRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import {compile} from "../services/Compiler"
 import Output from "./Output";
 import useToken from "./useToken";
+import Menu from "./Menu";
+import NewProjectDialog from "./NewProjectDialog";
 
 const Toolbar = () => {
 
     const [code, setCode] = useRecoilState(CodeAtom);
     const [openOutput, setOpenOutput] = useState(false);
     const [outputContent, setOutputContent] = useState("");
-    const { token, setToken } = useToken();
-    const counterBlock = code.length;
+    const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
+    const {token, setToken} = useToken();
 
-    const handleAddBlock = () => {
-        //Adding new block
-        setCode((oldCode) => [
-            ...oldCode,
-            {
-                id: counterBlock + 1,
-                codeValue: ""
-            }
-        ]);
+
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const handleMenuOpen = () => {
+        setMenuOpen(!menuOpen);
     }
 
     const handleRunCode = async () => {
@@ -42,9 +41,17 @@ const Toolbar = () => {
     return (
         <Fragment>
             <div className={'toolbar'}>
-                <div className={'add'} onClick={handleAddBlock}>
-                    <Add className={'add-button'}/>
-                    <span>new snippet</span>
+                <div className={'menu'} onClick={handleMenuOpen}>
+                    <span>menu</span>
+                    {
+                        menuOpen ?
+                            <Fragment>
+                                <ArrowDropUpIcon className={'menu-button'}/>
+                                <Menu setNewProjectDialogOpen={() => setNewProjectDialogOpen(true)}/>
+                            </Fragment>
+                            : <ArrowDropDownIcon className={'menu-button'}/>
+                    }
+
                 </div>
                 <div className={'run'} onClick={handleRunCode}>
                     <Run className={'run-button'}/>
@@ -52,7 +59,8 @@ const Toolbar = () => {
                 </div>
 
             </div>
-            <Output isOpen={openOutput} onClose={() => setOpenOutput(false)} content={outputContent} />
+            <Output isOpen={openOutput} onClose={() => setOpenOutput(false)} content={outputContent}/>
+            <NewProjectDialog open={newProjectDialogOpen} handleClose={() => setNewProjectDialogOpen(false)} />
             <style jsx>{`
             
                 .toolbar {
@@ -62,18 +70,22 @@ const Toolbar = () => {
                     z-index: 9;
                 }
                 
-                .add, .run {
+                .menu, .run {
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     cursor: pointer;
                 }
                 
+                .menu {
+                    position: relative;
+                }
+                
                 .run {
                     font-style: italic;
                 }
                 
-                .add-button, .run-button {
+                .menu-button, .run-button {
                     color: grey;
                     font-size: 25px;
                 }
