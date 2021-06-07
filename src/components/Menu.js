@@ -1,9 +1,11 @@
 import React, {Fragment, useState} from "react";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useSetRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
+import {ProjectAtom} from "../atoms/ProjectAtom";
 
 const Menu = ({setNewProjectDialogOpen}) => {
 
+    const setProject = useSetRecoilState(ProjectAtom);
     const [code, setCode] = useRecoilState(CodeAtom);
     const counterBlock = code.length;
 
@@ -18,13 +20,17 @@ const Menu = ({setNewProjectDialogOpen}) => {
         ]);
     }
 
+    const handleCloseProject = () => {
+        setProject("");
+    }
+
     return (
         <Fragment>
             <ul className={'menu-container'}>
                 <li onClick={() => setNewProjectDialogOpen(true)}>New project (CMD+N)</li>
                 <li onClick={handleAddBlock}>New snippet (CMD+N+S)</li>
                 <li>Open project (CMD+O)</li>
-                <li>Close project (CMD+W)</li>
+                <li onClick={handleCloseProject}>Close project (CMD+W)</li>
                 <li>Delete project (CMD+X)</li>
             </ul>
 
