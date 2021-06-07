@@ -18,7 +18,7 @@ const createProject = async (token, projectName, language) => {
     });
 
     if(response.status === 201){
-        response = await response.json();
+        response = {error: false, location: response.headers.get("Location")};
     }else {
         response = {error: true};
     }
@@ -26,8 +26,8 @@ const createProject = async (token, projectName, language) => {
     return response;
 }
 
-const getProject = async (token, projectID) => {
-    const url = `${projectRoute}/${projectID}`;
+const getProject = async (token, projectID, projectUrl) => {
+    const url = projectID ? `${projectRoute}/${projectID}` : projectUrl;
 
     let response = await fetch(url, {
         method: 'GET',

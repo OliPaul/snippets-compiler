@@ -18,7 +18,7 @@ const createSnippet = async (token, name, content, projectID) => {
     });
 
     if(response.status === 201){
-        response = await response.json();
+        response = {error: false, location: response.headers.get("Location")};
     }else {
         response = {error: true};
     }
