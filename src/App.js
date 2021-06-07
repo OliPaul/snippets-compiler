@@ -3,6 +3,7 @@ import {RecoilRoot} from "recoil";
 import Auth from "./pages/auth";
 import Content from "./pages/content";
 import useToken from "./components/useToken";
+import DisplayProjectName from "./components/DisplayProjectName";
 
 function App() {
 
@@ -14,6 +15,7 @@ function App() {
 
     return (
         <RecoilRoot>
+            <DisplayProjectName />
             <Header setToken={setToken} />
             <Content />
         </RecoilRoot>
