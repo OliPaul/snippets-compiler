@@ -7,12 +7,12 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {createProject, getProject} from "../services/Project";
 import useToken from "./useToken";
-import {useSetRecoilState} from "recoil";
+import {useRecoilState} from "recoil";
 import {ProjectAtom} from "../atoms/ProjectAtom";
 
 const NewProjectDialog = ({open, handleClose}) => {
 
-    const setProject = useSetRecoilState(ProjectAtom);
+    const [project, setProject] = useRecoilState(ProjectAtom);
     const [projectName, setProjectName] = useState("");
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
