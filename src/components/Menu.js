@@ -10,7 +10,6 @@ const Menu = ({setNewProjectDialogOpen}) => {
 
     const [project, setProject] = useRecoilState(ProjectAtom);
     const [code, setCode] = useRecoilState(CodeAtom);
-    const counterBlock = code.length;
     const {token, setToken} = useToken();
 
     const handleAddBlock = (snippetData) => {
@@ -46,6 +45,7 @@ const Menu = ({setNewProjectDialogOpen}) => {
 
     const handleCloseProject = () => {
         setProject("");
+        setCode([]);
     }
 
     return (
