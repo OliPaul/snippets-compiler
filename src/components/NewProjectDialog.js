@@ -5,14 +5,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {createProject, getProject} from "../services/Project";
+import {createProject, getProject, joinProject} from "../services/Project";
 import useToken from "./useToken";
 import {useRecoilState} from "recoil";
 import {ProjectAtom} from "../atoms/ProjectAtom";
 
 const NewProjectDialog = ({open, handleClose}) => {
 
-    const [project, setProject] = useRecoilState(ProjectAtom);
+    const [projectState, setProjectState] = useRecoilState(ProjectAtom);
     const [projectName, setProjectName] = useState("");
     const [error, setError] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
@@ -44,7 +44,17 @@ const NewProjectDialog = ({open, handleClose}) => {
 
         //Get project and set it in project state
         const project = await getProject(token, null, response.location);
-        setProject(JSON.stringify(project));
+
+        const joinRequest = await joinProject(token, project.token);
+
+        if(joinRequest.error) {
+            console.log("Join error");
+            return;
+        }
+
+        setProjectState(JSON.stringify(project));
+
+
     }
 
     const resetState = () => {
