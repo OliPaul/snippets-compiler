@@ -33,7 +33,7 @@ const Toolbar = () => {
         setOutputContent("Compilation start...");
         setOpenOutput(true)
         //Get code value
-        let codeValue = code.map(({codeValue}) => codeValue);
+        let codeValue = code.map(({content}) => content);
         // And join it with \n
         codeValue = codeValue.join("\n");
         //Send code to server for compilation

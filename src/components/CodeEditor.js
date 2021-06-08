@@ -24,7 +24,7 @@ const CodeEditor = ({key, code}) => {
     let snippetName = "";
     let createdUserId = "";
 
-    if(codeAtom.length > 0) {
+    if(snippet) {
         snippetName = snippet.name;
         createdUserId = snippet.createUserId;
     }
@@ -71,15 +71,14 @@ const CodeEditor = ({key, code}) => {
 
     const handleDeleteCodeBlock = async () => {
 
-        await deleteSnippet(token, snippet.id).then((response) => {
-            if(response.error) {
-                console.log("Cannot delete");
-                return;
-            }
+        const newCodeList = removeItemAtIndex(codeAtom, index)
+        setCodeAtom(newCodeList);
 
-            let newCodeList = removeItemAtIndex(codeAtom, index)
-            setCodeAtom(newCodeList);
-        })
+        const response = await deleteSnippet(token, snippet.id);
+        if (response.error) {
+            console.log("Cannot delete");
+            return;
+        }
 
     }
 
