@@ -15,7 +15,7 @@ import {deleteSnippet, updateSnippet} from "../services/Snippets";
 
 const CodeEditor = ({key, code}) => {
 
-    const [codeValue, setCodeValue] = useState(code.codeValue);
+    const [codeValue, setCodeValue] = useState(code.content);
     const [output, setOutput] = useState("");
     const [codeAtom, setCodeAtom] = useRecoilState(CodeAtom);
     const {token, setToken} = useToken();
