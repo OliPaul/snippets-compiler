@@ -1,4 +1,4 @@
-const snippetsRoute = process.env.REACT_APP_BACK_URL + "/snippets";
+const snippetsRoute = process.env.REACT_APP_BACK_URL + "/api/snippets";
 
 const createSnippet = async (token, name, content, projectID) => {
 

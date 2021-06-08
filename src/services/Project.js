@@ -1,4 +1,4 @@
-const projectRoute = process.env.REACT_APP_BACK_URL + "/projects";
+const projectRoute = process.env.REACT_APP_BACK_URL + "/api/projects";
 
 const createProject = async (token, projectName, language) => {
     const url = projectRoute;
@@ -55,8 +55,8 @@ const joinProject = async (token, projectToken) => {
         },
     });
 
-    if(response.status === 200){
-        response = await response.json();
+    if(response.status === 201){
+        response = response = {error: false, location: response.headers.get("Location")};
     }else {
         response = {error: true};
     }
