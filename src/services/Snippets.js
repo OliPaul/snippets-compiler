@@ -72,8 +72,8 @@ const deleteSnippet = async (token, snippetID) => {
     return response;
 }
 
-const getSnippets = async (token, projectID) => {
-    const url = `${snippetsRoute}/project/${projectID}`;
+const getSnippets = async (token, projectID, snippetsProjectUrl) => {
+    const url = projectID ? `${snippetsRoute}/project/${projectID}` : snippetsProjectUrl;
 
     let response = await fetch(url, {
         method: 'GET',
