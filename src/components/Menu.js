@@ -2,7 +2,7 @@ import React, {Fragment, useState} from "react";
 import {useRecoilState, useSetRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import {ProjectAtom} from "../atoms/ProjectAtom";
-import {createSnippet} from "../services/Snippets";
+import {createSnippet, getSnippets} from "../services/Snippets";
 import useToken from "./useToken";
 import randomWord from 'random-words';
 
@@ -15,10 +15,7 @@ const Menu = ({setNewProjectDialogOpen}) => {
 
     const handleAddBlock = (snippetData) => {
         //Adding new block
-        setCode((oldCode) => [
-            ...oldCode,
-            snippetData
-        ]);
+        setCode(snippetData);
     }
 
     const handleNewSnippet = async () => {
@@ -35,11 +32,12 @@ const Menu = ({setNewProjectDialogOpen}) => {
                 return;
             }
 
-            const snippetData = {
-                id: counterBlock + 1,
-                name: snippetName,
-                codeValue: "",
-                projectID: projectObject.id
+            const snippetData = await getSnippets(token, null, response.location);
+            console.log(snippetData);
+
+            if(snippetData.error){
+                console.log("Cannot get snippets for this project");
+                return;
             }
 
             handleAddBlock(snippetData);
