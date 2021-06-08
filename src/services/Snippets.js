@@ -45,7 +45,7 @@ const updateSnippet = async (token, snippetID, name, content, projectID) => {
     });
 
     if(response.status === 200){
-        response = await response.json();
+        response = {error: false};
     }else {
         response = {error: true};
     }
@@ -63,8 +63,8 @@ const deleteSnippet = async (token, snippetID) => {
         },
     });
 
-    if(response.status === 200){
-        response = await response.json();
+    if(response.status === 204){
+        response = {error: false};
     }else {
         response = {error: true};
     }
