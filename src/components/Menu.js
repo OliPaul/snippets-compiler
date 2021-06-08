@@ -6,7 +6,7 @@ import {createSnippet, getSnippets} from "../services/Snippets";
 import useToken from "./useToken";
 import randomWord from 'random-words';
 
-const Menu = ({setNewProjectDialogOpen}) => {
+const Menu = ({setNewProjectDialogOpen, setOpenProjectDialogOpen}) => {
 
     const [project, setProject] = useRecoilState(ProjectAtom);
     const [code, setCode] = useRecoilState(CodeAtom);
@@ -53,7 +53,7 @@ const Menu = ({setNewProjectDialogOpen}) => {
             <ul className={'menu-container'}>
                 <li onClick={() => setNewProjectDialogOpen(true)}>New project (CMD+N)</li>
                 <li onClick={handleNewSnippet}>New snippet (CMD+N+S)</li>
-                <li>Open project (CMD+O)</li>
+                <li onClick={() => setOpenProjectDialogOpen(true)}>Open project (CMD+O)</li>
                 <li onClick={handleCloseProject}>Close project (CMD+W)</li>
                 <li>Delete project (CMD+X)</li>
             </ul>
