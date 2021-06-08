@@ -48,15 +48,26 @@ const Menu = ({setNewProjectDialogOpen, setOpenProjectDialogOpen, setJoinProject
         setCode([]);
     }
 
+    const handleNewProject = () => {
+        setNewProjectDialogOpen(true);
+    }
+
+    const handleOpenProject = () => {
+        setOpenProjectDialogOpen(true);
+    }
+
+    const handleJoinProject = () => {
+        setJoinProjectDialogOpen(true);
+    }
+
     return (
         <Fragment>
             <ul className={'menu-container'}>
-                <li onClick={() => setNewProjectDialogOpen(true)}>New project (CMD+N)</li>
-                <li onClick={handleNewSnippet}>New snippet (CMD+N+S)</li>
-                <li onClick={() => setOpenProjectDialogOpen(true)}>Open project (CMD+O)</li>
-                <li onClick={() => setJoinProjectDialogOpen(true)}>Join project (CMD+J)</li>
-                <li onClick={handleCloseProject}>Close project (CMD+W)</li>
-                <li>Delete project (CMD+X)</li>
+                <li onClick={handleNewProject}>New project</li>
+                <li onClick={handleNewSnippet}>New snippet</li>
+                <li onClick={handleOpenProject}>Open project</li>
+                <li onClick={handleJoinProject}>Join project</li>
+                <li onClick={handleCloseProject}>Close project</li>
             </ul>
 
             <style jsx>{`
