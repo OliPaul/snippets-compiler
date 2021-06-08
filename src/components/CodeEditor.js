@@ -11,14 +11,16 @@ import {compile} from "../services/Compiler";
 import DeleteSnippet from "./DeleteSnippet";
 import SnippetOutput from "./SnippetOutput";
 import useToken from "./useToken";
+import {deleteSnippet, updateSnippet} from "../services/Snippets";
 
 const CodeEditor = ({key, code}) => {
 
     const [codeValue, setCodeValue] = useState(code.codeValue);
     const [output, setOutput] = useState("");
     const [codeAtom, setCodeAtom] = useRecoilState(CodeAtom);
-    const { token, setToken } = useToken();
+    const {token, setToken} = useToken();
     const index = codeAtom.findIndex((el) => el.id === code.id);
+    let snippet = codeAtom.find((el) => el.id === code.id);
 
     const handleCodeChange = (value) => {
         setCodeValue(value);
@@ -26,10 +28,19 @@ const CodeEditor = ({key, code}) => {
     }
 
     const updateValueFromKey = (key, value) => {
-        const newCodeList = replaceItemAtIndex(codeAtom, index, {
-            id: key,
-            codeValue: value
-        });
+
+        const newSnippet = {
+            content: value,
+            createUserId: snippet.createUserId,
+            createdDate: snippet.createdDate,
+            id: snippet.id,
+            name: snippet.name,
+            projectId: snippet.projectId,
+            updateDate: snippet.updateDate,
+            updateUserId: snippet.updateUserId,
+        }
+
+        const newCodeList = replaceItemAtIndex(codeAtom, index, newSnippet);
 
         setCodeAtom(newCodeList)
     }
@@ -42,16 +53,33 @@ const CodeEditor = ({key, code}) => {
 
     }
 
-    const handleDeleteCodeBlock = () => {
+    const handleUpdateCodeBlock = async () => {
+        const response = await updateSnippet(token, snippet.id, snippet.name, snippet.content, snippet.projectId);
 
-        let newCodeList = removeItemAtIndex(codeAtom, index)
+        if(response.error) {
+            console.log("Cannot update");
+            return;
+        }
+    }
 
-        setCodeAtom(newCodeList);
+    const handleDeleteCodeBlock = async () => {
+
+        await deleteSnippet(token, snippet.id).then((response) => {
+            if(response.error) {
+                console.log("Cannot delete");
+                return;
+            }
+
+            let newCodeList = removeItemAtIndex(codeAtom, index)
+            setCodeAtom(newCodeList);
+        })
+
     }
 
     return (
         <Fragment>
             <div key={key} className={'code-block-' + code.id}>
+                <span className={'code-name'}>{snippet.name} / {snippet.createUserId}</span>
                 <AceEditor
                     mode={'c_cpp'}
                     placeholder="Allez, écris un beau snippet ! 🔥"
@@ -59,6 +87,7 @@ const CodeEditor = ({key, code}) => {
                     name={'codeblock-' + code.id}
                     value={codeValue}
                     onChange={handleCodeChange}
+                    onBlur={handleUpdateCodeBlock}
                     fontSize={14}
                     showPrintMargin={true}
                     showGutter={true}
@@ -73,7 +102,7 @@ const CodeEditor = ({key, code}) => {
                 <DeleteSnippet onClick={handleDeleteCodeBlock} className={'delete-snippet-' + code.id}/>
                 <RunSnippet onClick={() => handleRunCode(codeValue)} className={'play-snippet-' + code.id}/>
             </div>
-            {output != "" && <SnippetOutput output={output} className={'snippet-output-' + code.id} />}
+            {output != "" && <SnippetOutput output={output} className={'snippet-output-' + code.id}/>}
             <style jsx>{`
                 .code-block-${code.id} {
                     margin: 20px auto 0 auto;
@@ -82,6 +111,14 @@ const CodeEditor = ({key, code}) => {
                     overflow: auto;
                     width: fit-content;
                     position: relative;
+                    text-align: right;
+                }
+                
+                .code-block-${code.id} .code-name {
+                    font-size: 12px;
+                    letter-spacing: 1px;
+                    font-family: Courier New, monospace;
+                    
                 }
                 
                 .play-snippet-${code.id} {
@@ -98,13 +135,13 @@ const CodeEditor = ({key, code}) => {
                 
                 .code-block-${code.id} .play-snippet-${code.id} {
                     position: absolute;
-                    top: 0;
+                    top: 20px;
                     right: 10px;
                 }
                 
                 .code-block-${code.id} .delete-snippet-${code.id} {
                     position: absolute;
-                    top: 0;
+                    top: 20px;
                     right: 30px;
                 }
                 
