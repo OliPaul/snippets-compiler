@@ -22,11 +22,11 @@ const CodeEditor = ({key, code}) => {
     const index = codeAtom.findIndex((el) => el.id === code.id);
     let snippet = codeAtom.find((el) => el.id === code.id);
     let snippetName = "";
-    let createdUserId = "";
+    let createUserName = "";
 
     if(snippet) {
         snippetName = snippet.name;
-        createdUserId = snippet.createUserId;
+        createUserName = snippet.createUserName;
     }
 
     const handleCodeChange = (value) => {
@@ -40,11 +40,13 @@ const CodeEditor = ({key, code}) => {
             content: value,
             createUserId: snippet.createUserId,
             createdDate: snippet.createdDate,
+            createUserName: snippet.createUserName,
             id: snippet.id,
             name: snippet.name,
             projectId: snippet.projectId,
             updateDate: snippet.updateDate,
             updateUserId: snippet.updateUserId,
+            updateUserName: snippet.updateUserName
         }
 
         const newCodeList = replaceItemAtIndex(codeAtom, index, newSnippet);
@@ -85,7 +87,7 @@ const CodeEditor = ({key, code}) => {
     return (
         <Fragment>
             <div key={key} className={'code-block-' + code.id}>
-                <span className={'code-name'}>{snippetName} / {createdUserId}</span>
+                <span className={'code-name'}>{snippetName} / created by <b>{createUserName}</b></span>
                 <AceEditor
                     mode={'c_cpp'}
                     placeholder="Allez, écris un beau snippet ! 🔥"
