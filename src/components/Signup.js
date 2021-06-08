@@ -7,7 +7,7 @@ import {validateEmail, validatePassword} from "../utils/Auth";
 
 const Signup = ({onSuccess}) => {
 
-    const [credentialsData, setCredentialsData] = useState({});
+    const [credentialsData] = useState({});
     const [email, setEmail] = useState("");
     const [errorMsg, setErrorMsg] = useState({});
     const [formError, setFormError] = useState("");

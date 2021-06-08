@@ -6,7 +6,7 @@ import {signIn} from "../services/Auth";
 
 const Signin = ({setToken}) => {
 
-    const [credentialsData, setCredentialsData] = useState({});
+    const [credentialsData] = useState({});
     const [errorMsg, setErrorMsg] = useState({});
     const [formError, setFormError] = useState("");
 

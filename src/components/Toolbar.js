@@ -2,7 +2,7 @@ import React, {Fragment, useState} from "react";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Run from '@material-ui/icons/AccessTime';
-import {useRecoilState} from "recoil";
+import {useRecoilValue} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import {compile} from "../services/Compiler"
 import Output from "./Output";
@@ -13,12 +13,12 @@ import OpenProjectDialog from "./OpenProjectDialog";
 
 const Toolbar = () => {
 
-    const [code, setCode] = useRecoilState(CodeAtom);
+    const code = useRecoilValue(CodeAtom);
     const [openOutput, setOpenOutput] = useState(false);
     const [outputContent, setOutputContent] = useState("");
     const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
     const [openProjectDialogOpen, setOpenProjectDialogOpen] = useState(false);
-    const {token, setToken} = useToken();
+    const {token} = useToken();
 
 
     const [menuOpen, setMenuOpen] = useState(false);

@@ -1,4 +1,4 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, {Fragment, useState} from "react";
 import AceEditor from "react-ace";
 import {useRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
@@ -18,7 +18,7 @@ const CodeEditor = ({key, code}) => {
     const [codeValue, setCodeValue] = useState(code.content);
     const [output, setOutput] = useState("");
     const [codeAtom, setCodeAtom] = useRecoilState(CodeAtom);
-    const {token, setToken} = useToken();
+    const {token} = useToken();
     const index = codeAtom.findIndex((el) => el.id === code.id);
     let snippet = codeAtom.find((el) => el.id === code.id);
     let snippetName = "";
