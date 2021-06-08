@@ -35,6 +35,10 @@ const Output = ({isOpen, onClose, content}) => {
                     font-size: 15px;
                 }
                 
+                .output-content p {
+                    white-space: pre-line;
+                }
+                
                 .output .output-header {
                     display: flex;
                     justify-content: space-between;
