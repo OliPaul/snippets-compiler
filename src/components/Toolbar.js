@@ -10,6 +10,7 @@ import useToken from "./useToken";
 import Menu from "./Menu";
 import NewProjectDialog from "./NewProjectDialog";
 import OpenProjectDialog from "./OpenProjectDialog";
+import JoinProjectDialog from "./JoinProjectDialog";
 
 const Toolbar = () => {
 
@@ -18,6 +19,7 @@ const Toolbar = () => {
     const [outputContent, setOutputContent] = useState("");
     const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
     const [openProjectDialogOpen, setOpenProjectDialogOpen] = useState(false);
+    const [joinProjectDialogOpen, setJoinProjectDialogOpen] = useState(false);
     const {token} = useToken();
 
 
@@ -52,6 +54,7 @@ const Toolbar = () => {
                                 <Menu
                                     setNewProjectDialogOpen={() => setNewProjectDialogOpen(true)}
                                     setOpenProjectDialogOpen={() => setOpenProjectDialogOpen(true)}
+                                    setJoinProjectDialogOpen={() => setJoinProjectDialogOpen(true)}
                                 />
                             </Fragment>
                             : <ArrowDropDownIcon className={'menu-button'}/>
@@ -67,6 +70,7 @@ const Toolbar = () => {
             <Output isOpen={openOutput} onClose={() => setOpenOutput(false)} content={outputContent}/>
             <NewProjectDialog open={newProjectDialogOpen} handleClose={() => setNewProjectDialogOpen(false)} />
             <OpenProjectDialog open={openProjectDialogOpen} handleClose={() => setOpenProjectDialogOpen(false)} />
+            <JoinProjectDialog open={joinProjectDialogOpen} handleClose={() => setJoinProjectDialogOpen(false)} />
             <style jsx>{`
             
                 .toolbar {
