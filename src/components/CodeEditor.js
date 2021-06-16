@@ -110,7 +110,6 @@ const CodeEditor = ({key, code}) => {
                 <DeleteSnippet onClick={handleDeleteCodeBlock} className={'delete-snippet-' + code.id}/>
                 <RunSnippet onClick={() => handleRunCode(codeValue)} className={'play-snippet-' + code.id}/>
             </div>
-            {output != "" && <SnippetOutput output={output} className={'snippet-output-' + code.id}/>}
             <style jsx>{`
                 .code-block-${code.id} {
                     margin: 20px auto 0 auto;
