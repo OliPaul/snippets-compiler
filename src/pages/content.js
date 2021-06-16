@@ -2,6 +2,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import {useRecoilValue} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import CodeEditor from "../components/CodeEditor";
+import Output from "../components/Output";
 
 const Content = () => {
 
@@ -20,6 +21,9 @@ const Content = () => {
                         ))
                     }
                 </div>
+                <div className={'output-container'}>
+                    <Output />
+                </div>
             </div>
 
             <style jsx>{`
@@ -37,7 +41,12 @@ const Content = () => {
                 }
                 
                 .content .code-blocks-container {
-                    width: 50%;
+                    flex: 1;
+                    min-height: 100%;
+                }
+                
+                .content .output-container {
+                    flex: 1;
                     min-height: 100%;
                 }
             `}</style>
