@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import AceEditor from "react-ace";
 import {useRecoilState, useSetRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
@@ -9,7 +9,6 @@ import "ace-builds/src-noconflict/theme-monokai";
 import RunSnippet from "./RunSnippet";
 import {compile} from "../services/Compiler";
 import DeleteSnippet from "./DeleteSnippet";
-import SnippetOutput from "./SnippetOutput";
 import useToken from "./useToken";
 import {deleteSnippet, updateSnippet} from "../services/Snippets";
 import {OutputContentAtom} from "../atoms/OutputContentAtom";
@@ -17,6 +16,7 @@ import {OutputContentAtom} from "../atoms/OutputContentAtom";
 const CodeEditor = ({key, code}) => {
 
     const [codeValue, setCodeValue] = useState(code.content);
+    const [actuallyEdited, setActuallyEdited] = useState(false);
     const setOutputContent = useSetRecoilState(OutputContentAtom);
     const [codeAtom, setCodeAtom] = useRecoilState(CodeAtom);
     const {token} = useToken();
@@ -27,19 +27,42 @@ const CodeEditor = ({key, code}) => {
     let action = "";
 
     if(snippet) {
+
         snippetName = snippet.name;
         if (snippet.updateDate) {
+
             userName = snippet.updateUserName;
             action = "updated by ";
+
         } else {
             userName = snippet.createUserName;
             action = "created by "
         }
     }
 
+    useEffect(() => {
+
+        function checkEdit() {
+            const currentDate = new Date();
+            const snippetUpdateDate = new Date(snippet?.updateDate);
+            const minutesBetweenNowAndLastEditingDate = (currentDate - snippetUpdateDate) / 60000;
+
+            if(minutesBetweenNowAndLastEditingDate < 1) {
+                setActuallyEdited(true);
+            }else {
+                setActuallyEdited(false);
+            }
+        }
+
+        checkEdit();
+    });
+
+    useEffect(() => setCodeValue(code.content), [code]);
+
     const handleCodeChange = (value) => {
         setCodeValue(value);
         updateValueFromKey(code.id, value);
+        handleUpdateCodeBlock();
     }
 
     const updateValueFromKey = (key, value) => {
@@ -89,7 +112,6 @@ const CodeEditor = ({key, code}) => {
             console.log("Cannot delete");
             return;
         }
-
     }
 
     return (
@@ -103,7 +125,6 @@ const CodeEditor = ({key, code}) => {
                     name={'codeblock-' + code.id}
                     value={codeValue}
                     onChange={handleCodeChange}
-                    onBlur={handleUpdateCodeBlock}
                     fontSize={14}
                     showPrintMargin={true}
                     showGutter={true}
@@ -120,9 +141,10 @@ const CodeEditor = ({key, code}) => {
             </div>
             <style jsx>{`
                 .code-block-${code.id} {
-                    margin: 20px auto 0 auto;
+                    margin: 30px auto 0 auto;
                     height: 100px !important;
                     border-radius: 5px 5px 0 0;
+                    border-top: ${actuallyEdited ? '2px solid #009dc7' : ''};
                     width: fit-content;
                     position: relative;
                     text-align: right;

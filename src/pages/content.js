@@ -1,13 +1,40 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {useRecoilValue} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import CodeEditor from "../components/CodeEditor";
 import Output from "../components/Output";
+import useToken from "../components/useToken";
+import {getSnippets} from "../services/Snippets";
+import {ProjectAtom} from "../atoms/ProjectAtom";
 
 const Content = () => {
 
-    const codeValue = useRecoilValue(CodeAtom);
+    const [codeValue, setCodeValue] = useRecoilState(CodeAtom);
+    const [projectString] = useRecoilState(ProjectAtom);
     const [codeBlocks, setCodeBlocks] = useState(codeValue);
+    const {token} = useToken();
+    const MINUTE_MS = 1000;
+
+    useEffect(() => {
+        async function refreshCodeBlockState() {
+
+            const project = JSON.parse(projectString);
+            const response = await getSnippets(token, project.id, null);
+
+            if (response.error) {
+                console.log("Cannot refresh state");
+                return;
+            }
+
+            setCodeValue(response);
+        }
+
+        const interval = setInterval(() => {
+            refreshCodeBlockState();
+        }, MINUTE_MS);
+
+        return () => clearInterval(interval);
+    });
 
     useEffect(() => setCodeBlocks(codeValue), [codeValue]);
 
