@@ -22,7 +22,10 @@ const Content = () => {
                     }
                 </div>
                 <div className={'output-container'}>
-                    <Output />
+                    {
+                        codeBlocks.length != 0 &&
+                        <Output />
+                    }
                 </div>
             </div>
 
