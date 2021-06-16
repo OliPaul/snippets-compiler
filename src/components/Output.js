@@ -1,33 +1,46 @@
 import React, {Fragment} from "react";
-import Close from "@material-ui/icons/Close";
+import {useRecoilValue} from "recoil";
+import {OutputContentAtom} from "../atoms/OutputContentAtom";
 
-const Output = ({isOpen, onClose, content}) => {
+const Output = () => {
+
+    const content = useRecoilValue(OutputContentAtom);
 
     return (
         <Fragment>
-            <div className={`output ${isOpen ? 'opened' : 'closed'}`}>
-                <div className={'output-header'}>
-                    <p className={'output-header-title'}>Output</p>
-                    <div className={'close'} onClick={onClose}>
-                        <Close className={'close-button'}/>
+            <div className={`output`}>
+                <div className={'execution-output-container'}>
+                    <div className={'output-header'}>
+                        <p className={'output-header-title'}>Execution output</p>
+                    </div>
+                    <div className={'output-content'}>
+                        <p>{content}</p>
                     </div>
                 </div>
-                <div className={'output-content'}>
-                    <p>{content}</p>
+                <div className={'analysis-output-container'}>
+                    <div className={'output-header'}>
+                        <p className={'output-header-title'}>Code analysis output</p>
+                    </div>
+                    <div className={'output-content'}>
+                        <p>{content}</p>
+                    </div>
                 </div>
             </div>
 
             <style jsx>{`
                 .output {
-                    position: fixed;
-                    left: 0;
-                    bottom: ${isOpen ? '0' : '-100px'};
-                    right: 0;
-                    height: 100px;
+                    display: flex;
+                    flex-direction: column;
+                    width: 90%;
+                    height: 90%;
                     background-color: black;
                     color: green;
-                    overflow: scroll;
+                    overflow: auto;
                     z-index: 10;
+                }
+                
+                .execution-output-container, .analysis-output-container {
+                    flex: 1;
                 }
                 
                 .output-content {

@@ -2,21 +2,20 @@ import React, {Fragment, useState} from "react";
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 import Run from '@material-ui/icons/AccessTime';
-import {useRecoilValue} from "recoil";
+import {useRecoilValue, useSetRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import {compile} from "../services/Compiler"
-import Output from "./Output";
 import useToken from "./useToken";
 import Menu from "./Menu";
 import NewProjectDialog from "./NewProjectDialog";
 import OpenProjectDialog from "./OpenProjectDialog";
 import JoinProjectDialog from "./JoinProjectDialog";
+import {OutputContentAtom} from "../atoms/OutputContentAtom";
 
 const Toolbar = () => {
 
     const code = useRecoilValue(CodeAtom);
-    const [openOutput, setOpenOutput] = useState(false);
-    const [outputContent, setOutputContent] = useState("");
+    const setOutputContent = useSetRecoilState(OutputContentAtom);
     const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
     const [openProjectDialogOpen, setOpenProjectDialogOpen] = useState(false);
     const [joinProjectDialogOpen, setJoinProjectDialogOpen] = useState(false);
@@ -31,14 +30,13 @@ const Toolbar = () => {
 
     const handleRunCode = async () => {
         setOutputContent("Compilation start...");
-        setOpenOutput(true)
         //Get code value
         let codeValue = code.map(({content}) => content);
         // And join it with \n
         codeValue = codeValue.join("\n");
         //Send code to server for compilation
         const response = await compile(token, codeValue);
-        setOutputContent(`Result: ${response}`);
+        setOutputContent(response);
 
     }
 
@@ -67,7 +65,6 @@ const Toolbar = () => {
                 </div>
 
             </div>
-            <Output isOpen={openOutput} onClose={() => setOpenOutput(false)} content={outputContent}/>
             <NewProjectDialog open={newProjectDialogOpen} handleClose={() => setNewProjectDialogOpen(false)} />
             <OpenProjectDialog open={openProjectDialogOpen} handleClose={() => setOpenProjectDialogOpen(false)} />
             <JoinProjectDialog open={joinProjectDialogOpen} handleClose={() => setJoinProjectDialogOpen(false)} />

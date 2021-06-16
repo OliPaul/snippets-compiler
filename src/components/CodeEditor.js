@@ -1,6 +1,6 @@
 import React, {Fragment, useState} from "react";
 import AceEditor from "react-ace";
-import {useRecoilState} from "recoil";
+import {useRecoilState, useSetRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import {removeItemAtIndex, replaceItemAtIndex} from "../utils/ArrayUtils";
 
@@ -12,11 +12,12 @@ import DeleteSnippet from "./DeleteSnippet";
 import SnippetOutput from "./SnippetOutput";
 import useToken from "./useToken";
 import {deleteSnippet, updateSnippet} from "../services/Snippets";
+import {OutputContentAtom} from "../atoms/OutputContentAtom";
 
 const CodeEditor = ({key, code}) => {
 
     const [codeValue, setCodeValue] = useState(code.content);
-    const [output, setOutput] = useState("");
+    const setOutputContent = useSetRecoilState(OutputContentAtom);
     const [codeAtom, setCodeAtom] = useRecoilState(CodeAtom);
     const {token} = useToken();
     const index = codeAtom.findIndex((el) => el.id === code.id);
@@ -55,10 +56,10 @@ const CodeEditor = ({key, code}) => {
     }
 
     const handleRunCode = async (code) => {
-        setOutput("Compilation start...");
+        setOutputContent("Compilation start...");
         //Send code to server for compilation
         const response = await compile(token, code);
-        setOutput(`Result: ${response}`);
+        setOutputContent(response);
 
     }
 
