@@ -116,7 +116,6 @@ const CodeEditor = ({key, code}) => {
                     margin: 20px auto 0 auto;
                     height: 100px !important;
                     border-radius: 5px 5px 0 0;
-                    overflow: auto;
                     width: fit-content;
                     position: relative;
                     text-align: right;
