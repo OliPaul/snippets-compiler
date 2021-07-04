@@ -62,7 +62,7 @@ const CodeEditor = ({key, code}) => {
     const handleCodeChange = (value) => {
         setCodeValue(value);
         updateValueFromKey(code.id, value);
-        handleUpdateCodeBlock();
+        handleUpdateCodeBlock(value);
     }
 
     const updateValueFromKey = (key, value) => {
@@ -94,8 +94,8 @@ const CodeEditor = ({key, code}) => {
 
     }
 
-    const handleUpdateCodeBlock = async () => {
-        const response = await updateSnippet(token, snippet.id, snippet.name, snippet.content, snippet.projectId);
+    const handleUpdateCodeBlock = async (value) => {
+        const response = await updateSnippet(token, snippet.id, snippet.name, value, snippet.projectId);
 
         if(response.error) {
             console.log("Cannot update");
