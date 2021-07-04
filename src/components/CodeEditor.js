@@ -147,10 +147,13 @@ const CodeEditor = ({key, code}) => {
                     margin: 30px auto 0 auto;
                     height: 100px !important;
                     border-radius: 5px 5px 0 0;
-                    border-top: ${actuallyEdited ? '2px solid #009dc7' : ''};
                     width: fit-content;
                     position: relative;
                     text-align: right;
+                }
+                
+                #codeblock-${code.id} {
+                    border: ${actuallyEdited ? '2px solid red' : ''};
                 }
                 
                 .code-block-${code.id} .code-name {
