@@ -22,23 +22,9 @@ const CodeEditor = ({key, code}) => {
     const {token} = useToken();
     const index = codeAtom.findIndex((el) => el.id === code.id);
     let snippet = codeAtom.find((el) => el.id === code.id);
-    let snippetName = "";
-    let userName = "";
-    let action = "";
-
-    if(snippet) {
-
-        snippetName = snippet.name;
-        if (snippet.updateDate) {
-
-            userName = snippet.updateUserName;
-            action = "updated by ";
-
-        } else {
-            userName = snippet.createUserName;
-            action = "created by "
-        }
-    }
+    const [snippetName, setSnippetName] = useState("");
+    const [userName, setUserName] = useState("");
+    const [action, setAction] = useState("");
 
     useEffect(() => {
 
@@ -47,10 +33,26 @@ const CodeEditor = ({key, code}) => {
             const snippetUpdateDate = new Date(snippet?.updateDate);
             const minutesBetweenNowAndLastEditingDate = (currentDate - snippetUpdateDate) / 60000;
 
-            if(minutesBetweenNowAndLastEditingDate < 1) {
-                setActuallyEdited(true);
-            }else {
-                setActuallyEdited(false);
+            if (snippet) {
+                if (minutesBetweenNowAndLastEditingDate < 1) {
+                    setActuallyEdited(true);
+                    setUserName(snippet.updateUserName);
+                    setAction("edited by ");
+                } else {
+                    setActuallyEdited(false);
+
+
+                    setSnippetName(snippet.name);
+                    if (snippet.updateDate) {
+
+                        setUserName(snippet.updateUserName);
+                        setAction("updated by ");
+
+                    } else {
+                        setUserName(snippet.createUserName);
+                        setAction("created by ");
+                    }
+                }
             }
         }
 
@@ -97,7 +99,7 @@ const CodeEditor = ({key, code}) => {
     const handleUpdateCodeBlock = async (value) => {
         const response = await updateSnippet(token, snippet.id, snippet.name, value, snippet.projectId);
 
-        if(response.error) {
+        if (response.error) {
             console.log("Cannot update");
             return;
         }
