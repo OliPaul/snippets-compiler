@@ -1,10 +1,18 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {useRecoilValue} from "recoil";
 import {OutputContentAtom} from "../atoms/OutputContentAtom";
 
 const Output = () => {
 
-    const content = useRecoilValue(OutputContentAtom);
+    const contentState = useRecoilValue(OutputContentAtom);
+    const [content, setContent] = useState();
+
+    useEffect(() => {
+        if (contentState != "") {
+            setContent(JSON.parse(contentState));
+        }
+    }, [contentState]);
+
 
     return (
         <Fragment>
@@ -14,7 +22,7 @@ const Output = () => {
                         <p className={'output-header-title'}>Execution output</p>
                     </div>
                     <div className={'output-content'}>
-                        <p>{content}</p>
+                        <p>{content?.response}</p>
                     </div>
                 </div>
                 <div className={'analysis-output-container'}>
@@ -22,7 +30,7 @@ const Output = () => {
                         <p className={'output-header-title'}>Code analysis output</p>
                     </div>
                     <div className={'output-content'}>
-                        <p>{content}</p>
+                        <p>{content?.redundancy}</p>
                     </div>
                 </div>
             </div>

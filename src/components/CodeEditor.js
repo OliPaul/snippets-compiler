@@ -85,11 +85,12 @@ const CodeEditor = ({key, code}) => {
         setCodeAtom(newCodeList)
     }
 
-    const handleRunCode = async (code) => {
-        setOutputContent("Compilation start...");
+    const handleRunCode = async () => {
+        const output = JSON.stringify({response: "Compilation start...", redundancy: "Code analysis also start..."});
+        setOutputContent(output);
         //Send code to server for compilation
-        const response = await compile(token, code);
-        setOutputContent(response);
+        const response = await compile(token, [code.id], code.projectId);
+        setOutputContent(JSON.stringify(response));
 
     }
 
