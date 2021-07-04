@@ -12,6 +12,7 @@ import DeleteSnippet from "./DeleteSnippet";
 import useToken from "./useToken";
 import {deleteSnippet, updateSnippet} from "../services/Snippets";
 import {OutputContentAtom} from "../atoms/OutputContentAtom";
+import SnippetName from "./SnippetName";
 
 const CodeEditor = ({key, code}) => {
 
@@ -22,7 +23,7 @@ const CodeEditor = ({key, code}) => {
     const {token} = useToken();
     const index = codeAtom.findIndex((el) => el.id === code.id);
     let snippet = codeAtom.find((el) => el.id === code.id);
-    const [snippetName, setSnippetName] = useState("");
+    const [snippetName, setSnippetName] = useState(snippet?.name);
     const [userName, setUserName] = useState("");
     const [action, setAction] = useState("");
 
@@ -96,13 +97,18 @@ const CodeEditor = ({key, code}) => {
 
     }
 
-    const handleUpdateCodeBlock = async (value) => {
-        const response = await updateSnippet(token, snippet.id, snippet.name, value, snippet.projectId);
+    const handleUpdateCodeBlock = async (value, name = snippet.name) => {
+        const response = await updateSnippet(token, snippet.id, name, value, snippet.projectId);
 
         if (response.error) {
             console.log("Cannot update");
             return;
         }
+    }
+
+    const handleUpdateSnippetName = (name) => {
+        setSnippetName(name);
+        handleUpdateCodeBlock(snippet.content, name);
     }
 
     const handleDeleteCodeBlock = async () => {
@@ -120,7 +126,9 @@ const CodeEditor = ({key, code}) => {
     return (
         <Fragment>
             <div key={key} className={'code-block-' + code.id}>
-                <span className={'code-name'}>{snippetName} / {action} <b>{userName}</b></span>
+                <span className={'code-name'}>
+                    <SnippetName name={snippetName} onBlur={handleUpdateSnippetName} /> / {action} <b>{userName}</b>
+                </span>
                 <AceEditor
                     mode={'c_cpp'}
                     placeholder="Allez, écris un beau snippet ! 🔥"
