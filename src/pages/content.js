@@ -13,7 +13,7 @@ const Content = () => {
     const [projectString] = useRecoilState(ProjectAtom);
     const [codeBlocks, setCodeBlocks] = useState(codeValue);
     const {token} = useToken();
-    const MINUTE_MS = 1000;
+    const MINUTE_MS = 1500;
 
     useEffect(() => {
         async function refreshCodeBlockState() {
