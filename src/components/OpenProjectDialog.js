@@ -35,7 +35,7 @@ const OpenProjectDialog = ({open, handleClose}) => {
         }
 
         getProjectsList();
-    }, );
+    }, [open]);
 
     const handleProjectChange = ({target: {value}}) => {
         resetState()
