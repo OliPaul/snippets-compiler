@@ -1,5 +1,5 @@
 import React, {Fragment, useState} from "react";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import {ProjectAtom} from "../atoms/ProjectAtom";
 import {createSnippet, getSnippets} from "../services/Snippets";
@@ -22,7 +22,7 @@ const Menu = ({setNewProjectDialogOpen, setOpenProjectDialogOpen, setJoinProject
             setNewProjectDialogOpen(true);
         } else {
             const projectObject = JSON.parse(project);
-            const snippetName = randomWord();
+            const snippetName = "new snippet " + (code.length + 1);
             const codeValue = "";
             const response = await createSnippet(token, snippetName, codeValue, projectObject.id);
 
