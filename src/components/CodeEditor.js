@@ -1,11 +1,13 @@
 import React, {Fragment, useEffect, useState} from "react";
 import AceEditor from "react-ace";
-import {useRecoilState, useSetRecoilState} from "recoil";
+import {useRecoilState, useRecoilValue, useSetRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import {removeItemAtIndex, replaceItemAtIndex} from "../utils/ArrayUtils";
 
 import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/ext-language_tools"
 import RunSnippet from "./RunSnippet";
 import {compile} from "../services/Compiler";
 import DeleteSnippet from "./DeleteSnippet";
@@ -13,6 +15,7 @@ import useToken from "./useToken";
 import {deleteSnippet, updateSnippet} from "../services/Snippets";
 import {OutputContentAtom} from "../atoms/OutputContentAtom";
 import SnippetName from "./SnippetName";
+import {ProjectAtom} from "../atoms/ProjectAtom";
 
 const CodeEditor = ({key, code}) => {
 
@@ -20,19 +23,38 @@ const CodeEditor = ({key, code}) => {
     const [actuallyEdited, setActuallyEdited] = useState(false);
     const setOutputContent = useSetRecoilState(OutputContentAtom);
     const [codeAtom, setCodeAtom] = useRecoilState(CodeAtom);
+    const projectState = useRecoilValue(ProjectAtom);
     const {token} = useToken();
     const index = codeAtom.findIndex((el) => el.id === code.id);
     let snippet = codeAtom.find((el) => el.id === code.id);
     const [snippetName, setSnippetName] = useState(snippet?.name);
     const [userName, setUserName] = useState("");
     const [action, setAction] = useState("");
+    const [mode, setMode] = useState("");
+
 
     useEffect(() => {
+
+        function initMode() {
+            if (projectState != "") {
+                const project = JSON.parse(projectState);
+                switch (project.language) {
+                    case "C":
+                        setMode("c_cpp");
+                        break;
+                    case "JAVA":
+                        setMode("java");
+                        break;
+                    default:
+                        setMode("c_cpp");
+                }
+            }
+        }
 
         function checkEdit() {
             const currentDate = new Date();
             const snippetUpdateDate = new Date(snippet?.updateDate);
-            const minutesBetweenNowAndLastEditingDate = (currentDate - snippetUpdateDate) / 60000;
+            const minutesBetweenNowAndLastEditingDate = (currentDate - snippetUpdateDate) / 30000;
 
             if (snippet) {
                 if (minutesBetweenNowAndLastEditingDate < 1) {
@@ -57,6 +79,7 @@ const CodeEditor = ({key, code}) => {
             }
         }
 
+        initMode();
         checkEdit();
     });
 
@@ -127,10 +150,10 @@ const CodeEditor = ({key, code}) => {
         <Fragment>
             <div key={key} className={'code-block-' + code.id}>
                 <span className={'code-name'}>
-                    <SnippetName name={snippetName} onBlur={handleUpdateSnippetName} /> / {action} <b>{userName}</b>
+                    <SnippetName name={snippetName} onBlur={handleUpdateSnippetName}/> / {action} <b>{userName}</b>
                 </span>
                 <AceEditor
-                    mode={'c_cpp'}
+                    mode={mode}
                     placeholder="Allez, écris un beau snippet ! 🔥"
                     theme={'monokai'}
                     name={'codeblock-' + code.id}
@@ -141,9 +164,9 @@ const CodeEditor = ({key, code}) => {
                     showGutter={true}
                     highlightActiveLine={true}
                     setOptions={{
-                        enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: true,
-                        enableSnippets: true,
+                        enableBasicAutocompletion: false,
+                        enableLiveAutocompletion: false,
+                        enableSnippets: false,
                         showLineNumbers: true,
                         tabSize: 4,
                     }}/>

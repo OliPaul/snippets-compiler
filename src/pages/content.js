@@ -17,16 +17,17 @@ const Content = () => {
 
     useEffect(() => {
         async function refreshCodeBlockState() {
+            if(projectString != "") {
+                const project = JSON.parse(projectString);
+                const response = await getSnippets(token, project.id, null);
 
-            const project = JSON.parse(projectString);
-            const response = await getSnippets(token, project.id, null);
+                if (response.error) {
+                    console.log("Cannot refresh state");
+                    return;
+                }
 
-            if (response.error) {
-                console.log("Cannot refresh state");
-                return;
+                setCodeValue(response);
             }
-
-            setCodeValue(response);
         }
 
         const interval = setInterval(() => {

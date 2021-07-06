@@ -9,12 +9,15 @@ import {createProject, getProject, joinProject} from "../services/Project";
 import useToken from "./useToken";
 import {useRecoilState} from "recoil";
 import {ProjectAtom} from "../atoms/ProjectAtom";
+import {InputLabel, MenuItem, Select} from "@material-ui/core";
 
 const NewProjectDialog = ({open, handleClose}) => {
 
     const [projectState, setProjectState] = useRecoilState(ProjectAtom);
     const [projectName, setProjectName] = useState("");
+    const [languageSelected, setLanguageSelected] = useState("");
     const [error, setError] = useState(false);
+    const [errorLanguage, setErrorLanguage] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const {token} = useToken();
 
@@ -23,15 +26,26 @@ const NewProjectDialog = ({open, handleClose}) => {
         setProjectName(value);
     }
 
+    const handleLanguageChange = ({target: {value}}) => {
+        resetState()
+        setLanguageSelected(value);
+    }
+
     const handleCreateClick = async () => {
 
         if (projectName === "") {
             setError(true);
-            setErrorMsg("Project name is required")
+            setErrorMsg("Project name is required");
             return;
         }
 
-        const response = await createProject(token, projectName, "C");
+        if (languageSelected === "") {
+            setErrorLanguage(true);
+            setErrorMsg("Please select a language");
+            return;
+        }
+
+        const response = await createProject(token, projectName, languageSelected);
 
         if (response.error) {
             setErrorMsg("Something went wrong");
@@ -40,6 +54,7 @@ const NewProjectDialog = ({open, handleClose}) => {
 
         resetState();
         setProjectName("");
+        setLanguageSelected("");
         handleClose();
 
         //Get project and set it in project state
@@ -60,6 +75,7 @@ const NewProjectDialog = ({open, handleClose}) => {
     const resetState = () => {
         setErrorMsg("");
         setError(false);
+        setErrorLanguage(false);
     }
 
     return (
@@ -76,10 +92,21 @@ const NewProjectDialog = ({open, handleClose}) => {
                     type="text"
                     fullWidth
                     onChange={handleProjectNameChange}
+                    style={{marginBottom: "20px"}}
                 />
+                <Select
+                    error={errorLanguage}
+                    value={languageSelected}
+                    onChange={handleLanguageChange}
+                    fullWidth
+                    displayEmpty>
+                    <MenuItem value="">Your language</MenuItem>
+                    <MenuItem value={"C"}>C</MenuItem>
+                    <MenuItem value={"JAVA"}>Java</MenuItem>
+                </Select>
                 {
                     errorMsg != "" &&
-                    <p>{errorMsg}</p>
+                    <p style={{color: "red", fontStyle: "italic"}}>{errorMsg}</p>
                 }
             </DialogContent>
             <DialogActions>
