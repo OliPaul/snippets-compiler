@@ -59,7 +59,7 @@ const CodeEditor = ({key, code}) => {
             if (snippet) {
                 if (minutesBetweenNowAndLastEditingDate < 1) {
                     setActuallyEdited(true);
-                    setUserName(snippet.updateUserName);
+                    setUserName(actionUserName(snippet.updateUserName));
                     setAction("edited by ");
                 } else {
                     setActuallyEdited(false);
@@ -68,11 +68,11 @@ const CodeEditor = ({key, code}) => {
                     setSnippetName(snippet.name);
                     if (snippet.updateDate) {
 
-                        setUserName(snippet.updateUserName);
+                        setUserName(actionUserName(snippet.updateUserName));
                         setAction("updated by ");
 
                     } else {
-                        setUserName(snippet.createUserName);
+                        setUserName(actionUserName(snippet.createUserName));
                         setAction("created by ");
                     }
                 }
@@ -84,6 +84,24 @@ const CodeEditor = ({key, code}) => {
     });
 
     useEffect(() => setCodeValue(code.content), [code]);
+
+    const actionUserName = (username) => {
+        const userInfo = localStorage.getItem('userInfo');
+        const user = JSON.parse(userInfo);
+        return username == user?.username ? "me" : username;
+    }
+
+    const randomColor = () => {
+        const actionUser = actionUserName(snippet.updateUserName);
+        let color = "";
+        if(actionUser == "me") {
+            color = "red";
+        }else {
+            //color = '#'+Math.random().toString(16).slice(-3);
+            color = "#05b4f7";
+        }
+        return color;
+    }
 
     const handleCodeChange = (value) => {
         setCodeValue(value);
@@ -184,7 +202,7 @@ const CodeEditor = ({key, code}) => {
                 }
                 
                 #codeblock-${code.id} {
-                    border: ${actuallyEdited ? '2px solid red' : ''};
+                    border: ${actuallyEdited ? '2px solid ' + randomColor() : ''};
                 }
                 
                 .code-block-${code.id} .code-name {
