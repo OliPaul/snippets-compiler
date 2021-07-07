@@ -60,7 +60,7 @@ const CodeEditor = ({key, code}) => {
                 if (minutesBetweenNowAndLastEditingDate < 1) {
                     setActuallyEdited(true);
                     setUserName(actionUserName(snippet.updateUserName));
-                    setAction("edited by ");
+                    setAction("coding... 👨🏻‍💻🚀");
                 } else {
                     setActuallyEdited(false);
 
@@ -168,7 +168,14 @@ const CodeEditor = ({key, code}) => {
         <Fragment>
             <div key={key} className={'code-block-' + code.id}>
                 <span className={'code-name'}>
-                    <SnippetName name={snippetName} onBlur={handleUpdateSnippetName}/> / {action} <b>{userName}</b>
+                    <SnippetName name={snippetName} onBlur={handleUpdateSnippetName}/> / {actuallyEdited ?
+                    <Fragment>
+                        <b>{userName == "me" ? "I'm" : userName + "'s"}</b> {action}
+                    </Fragment> :
+                    <Fragment>
+                        {action} <b>{userName}</b>
+                    </Fragment>
+                }
                 </span>
                 <AceEditor
                     mode={mode}
