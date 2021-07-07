@@ -92,7 +92,7 @@ const CodeEditor = ({key, code}) => {
     }
 
     const randomColor = () => {
-        const actionUser = actionUserName(snippet.updateUserName);
+        const actionUser = actionUserName(snippet?.updateUserName);
         let color = "";
         if(actionUser == "me") {
             color = "red";
