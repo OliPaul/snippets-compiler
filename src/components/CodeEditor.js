@@ -34,6 +34,7 @@ const CodeEditor = ({key, code}) => {
     const [userName, setUserName] = useState("");
     const [action, setAction] = useState("");
     const [mode, setMode] = useState("");
+    const MINUTE_MS = 100;
 
 
     useEffect(() => {
@@ -82,11 +83,20 @@ const CodeEditor = ({key, code}) => {
             }
         }
 
-        initMode();
-        checkEdit();
+        const interval = setInterval(() => {
+            initMode();
+            checkEdit();
+        }, MINUTE_MS);
+
+        return () => clearInterval(interval);
     });
 
-    useEffect(() => setCodeValue(code.content), [code]);
+    useEffect(() => {
+        if(userName !== "me") {
+            setCodeValue(code.content);
+        }
+    }, [code]);
+
 
     const actionUserName = (username) => {
         const userInfo = localStorage.getItem('userInfo');
