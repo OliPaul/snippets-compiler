@@ -12,7 +12,8 @@ export const signIn = async (credentials) => {
         agent: httpsAgent,
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin':  '*'
         },
         body: JSON.stringify(credentials),
     });
@@ -33,7 +34,8 @@ export const signUp = async (userInfo) => {
         agent: httpsAgent,
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin':  '*'
         },
         body: JSON.stringify(userInfo),
     });

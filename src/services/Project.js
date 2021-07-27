@@ -17,7 +17,8 @@ export const createProject = async (token, projectName, language) => {
         agent: httpsAgent,
         headers: {
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            'Access-Control-Allow-Origin':  '*'
         },
         body: JSON.stringify(projectInfo),
     });
@@ -38,7 +39,8 @@ export const getProject = async (token, projectID, projectUrl) => {
         agent: httpsAgent,
         method: 'GET',
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            'Access-Control-Allow-Origin':  '*'
         },
     });
 
@@ -58,7 +60,8 @@ export const joinProject = async (token, projectToken) => {
         agent: httpsAgent,
         method: 'POST',
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            'Access-Control-Allow-Origin':  '*'
         },
     });
 
@@ -78,7 +81,8 @@ export const getProjects = async (token) => {
         agent: httpsAgent,
         method: 'GET',
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            'Access-Control-Allow-Origin':  '*'
         },
     });
 
