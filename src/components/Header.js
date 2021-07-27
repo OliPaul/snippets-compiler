@@ -15,13 +15,13 @@ const Header = ({setToken}) => {
         <Fragment>
             <div className={'header'}>
                 <div className={'logo'}>
-                    <h2 className={'title'}>
-                        Snippets Compiler
+                    <div className={'title'}>
+                        <img src={"Logo_allonge.png"} height={50} />
                         <span>
                             <PowerSettingsNewIcon className={'logout'} onClick={handleLogout} />
                             | {`Hey, ${username}! Amuse-toi 😎`}
                         </span>
-                    </h2>
+                    </div>
 
                 </div>
                 <div className={'toolbar-container'}>
@@ -47,11 +47,10 @@ const Header = ({setToken}) => {
                     font-family: IBM;
                     font-size: 20px;
                     letter-spacing: 2px;
-                    background-color: #009dc7;
+                    background-color: #77b6c7;
                 }
                 
                 .title {
-                    font-size: 30px;
                     text-align: center;
                 }
                 
