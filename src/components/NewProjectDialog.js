@@ -10,10 +10,16 @@ import useToken from "./useToken";
 import {useRecoilState} from "recoil";
 import {ProjectAtom} from "../atoms/ProjectAtom";
 import {InputLabel, MenuItem, Select} from "@material-ui/core";
+import {CodeAtom} from "../atoms/CodeAtom";
+import {SnippetsSelectedAtom} from "../atoms/SnippetsSelectedAtom";
+import {OutputContentAtom} from "../atoms/OutputContentAtom";
 
 const NewProjectDialog = ({open, handleClose}) => {
 
     const [projectState, setProjectState] = useRecoilState(ProjectAtom);
+    const [codeState, setCodeState] = useRecoilState(CodeAtom);
+    const [codeSelectedState, setCodeSelectedState] = useRecoilState(SnippetsSelectedAtom);
+    const [outputContentState, setoutputContentState] = useRecoilState(OutputContentAtom);
     const [projectName, setProjectName] = useState("");
     const [languageSelected, setLanguageSelected] = useState("");
     const [error, setError] = useState(false);
@@ -54,6 +60,9 @@ const NewProjectDialog = ({open, handleClose}) => {
 
         resetState();
         setProjectName("");
+        setCodeState([]);
+        setCodeSelectedState([]);
+        setoutputContentState("");
         setLanguageSelected("");
         handleClose();
 
