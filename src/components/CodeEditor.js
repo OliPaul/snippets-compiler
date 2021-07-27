@@ -16,6 +16,8 @@ import {deleteSnippet, updateSnippet} from "../services/Snippets";
 import {OutputContentAtom} from "../atoms/OutputContentAtom";
 import SnippetName from "./SnippetName";
 import {ProjectAtom} from "../atoms/ProjectAtom";
+import {Checkbox} from "@material-ui/core";
+import {SnippetsSelectedAtom} from "../atoms/SnippetsSelectedAtom";
 
 const CodeEditor = ({key, code}) => {
 
@@ -23,6 +25,7 @@ const CodeEditor = ({key, code}) => {
     const [actuallyEdited, setActuallyEdited] = useState(false);
     const setOutputContent = useSetRecoilState(OutputContentAtom);
     const [codeAtom, setCodeAtom] = useRecoilState(CodeAtom);
+    const [snippetSelectedAtom, setSnippetSelectedAtom] = useRecoilState(SnippetsSelectedAtom);
     const projectState = useRecoilValue(ProjectAtom);
     const {token} = useToken();
     const index = codeAtom.findIndex((el) => el.id === code.id);
@@ -94,9 +97,9 @@ const CodeEditor = ({key, code}) => {
     const randomColor = () => {
         const actionUser = actionUserName(snippet?.updateUserName);
         let color = "";
-        if(actionUser == "me") {
+        if (actionUser == "me") {
             color = "red";
-        }else {
+        } else {
             //color = '#'+Math.random().toString(16).slice(-3);
             color = "#05b4f7";
         }
@@ -164,9 +167,31 @@ const CodeEditor = ({key, code}) => {
         }
     }
 
+    const handleChecked = (e) => {
+        let snippetsSelected = snippetSelectedAtom;
+
+        if (!e.target.checked) {
+            snippetsSelected = snippetsSelected.filter(snippet => snippet !== e.target.value);
+            setSnippetSelectedAtom(snippetsSelected);
+            return;
+        }
+
+        setSnippetSelectedAtom((currentState) => [
+            ...currentState,
+            e.target.value
+        ]);
+    }
+
     return (
         <Fragment>
-            <div key={key} className={'code-block-' + code.id}>
+
+            <div className={"container-block"}>
+                <Checkbox
+                    name={'code-block-' + code.id}
+                    onChange={handleChecked}
+                    value={code.id}
+                />
+                <div key={key} className={'code-block-' + code.id}>
                 <span className={'code-name'}>
                     <SnippetName name={snippetName} onBlur={handleUpdateSnippetName}/> / {actuallyEdited ?
                     <Fragment>
@@ -177,30 +202,38 @@ const CodeEditor = ({key, code}) => {
                     </Fragment>
                 }
                 </span>
-                <AceEditor
-                    mode={mode}
-                    placeholder="Allez, écris un beau snippet ! 🔥"
-                    theme={'monokai'}
-                    name={'codeblock-' + code.id}
-                    value={codeValue}
-                    onChange={handleCodeChange}
-                    fontSize={14}
-                    showPrintMargin={true}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    setOptions={{
-                        enableBasicAutocompletion: false,
-                        enableLiveAutocompletion: false,
-                        enableSnippets: false,
-                        showLineNumbers: true,
-                        tabSize: 4,
-                    }}/>
-                <DeleteSnippet onClick={handleDeleteCodeBlock} className={'delete-snippet-' + code.id}/>
-                <RunSnippet onClick={() => handleRunCode(codeValue)} className={'play-snippet-' + code.id}/>
+                    <AceEditor
+                        mode={mode}
+                        placeholder="Allez, écris un beau snippet ! 🔥"
+                        theme={'monokai'}
+                        name={'codeblock-' + code.id}
+                        value={codeValue}
+                        onChange={handleCodeChange}
+                        fontSize={14}
+                        showPrintMargin={true}
+                        showGutter={true}
+                        highlightActiveLine={true}
+                        setOptions={{
+                            enableBasicAutocompletion: false,
+                            enableLiveAutocompletion: false,
+                            enableSnippets: false,
+                            showLineNumbers: true,
+                            tabSize: 4,
+                        }}/>
+                    <DeleteSnippet onClick={handleDeleteCodeBlock} className={'delete-snippet-' + code.id}/>
+                    <RunSnippet onClick={() => handleRunCode(codeValue)} className={'play-snippet-' + code.id}/>
+                </div>
             </div>
             <style jsx>{`
+            
+                .container-block {
+                    display: flex;
+                    flex-direction: row;
+                    height: 120px;
+                    justify-content: center;
+                }
+            
                 .code-block-${code.id} {
-                    margin: 30px auto 0 auto;
                     height: 100px !important;
                     border-radius: 5px 5px 0 0;
                     width: fit-content;

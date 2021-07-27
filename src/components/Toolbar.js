@@ -12,11 +12,13 @@ import OpenProjectDialog from "./OpenProjectDialog";
 import JoinProjectDialog from "./JoinProjectDialog";
 import {OutputContentAtom} from "../atoms/OutputContentAtom";
 import {ProjectAtom} from "../atoms/ProjectAtom";
+import {SnippetsSelectedAtom} from "../atoms/SnippetsSelectedAtom";
 
 const Toolbar = () => {
 
     const code = useRecoilValue(CodeAtom);
     const projectState = useRecoilValue(ProjectAtom);
+    const snippetsSelectedState = useRecoilValue(SnippetsSelectedAtom);
     const setOutputContent = useSetRecoilState(OutputContentAtom);
     const [newProjectDialogOpen, setNewProjectDialogOpen] = useState(false);
     const [openProjectDialogOpen, setOpenProjectDialogOpen] = useState(false);
@@ -31,10 +33,16 @@ const Toolbar = () => {
     }
 
     const handleRunCode = async () => {
+
         const output = JSON.stringify({response: "Compilation start...", redundancy: "Code analysis also start..."});
         setOutputContent(output);
         //Get code value
         let snippetsId = code.map(({id}) => id);
+
+        if(snippetsSelectedState.length !== 0) {
+            snippetsId = snippetsId.filter((id) => snippetsSelectedState.includes(id.toString()));
+        }
+
         let project = JSON.parse(projectState);
         //Send code to server for compilation
         const response = await compile(token, snippetsId, project.id);
