@@ -1,6 +1,6 @@
 const snippetsRoute = process.env.REACT_APP_BACK_URL + "/api/snippets";
 
-const createSnippet = async (token, name, content, projectID) => {
+export const createSnippet = async (token, name, content, projectID) => {
 
     const snippetInfo = {
         name: name,
@@ -26,7 +26,7 @@ const createSnippet = async (token, name, content, projectID) => {
     return response;
 }
 
-const updateSnippet = async (token, snippetID, name, content, projectID) => {
+export const updateSnippet = async (token, snippetID, name, content, projectID) => {
 
     const snippetInfo = {
         id: snippetID,
@@ -53,7 +53,7 @@ const updateSnippet = async (token, snippetID, name, content, projectID) => {
     return response;
 }
 
-const deleteSnippet = async (token, snippetID) => {
+export const deleteSnippet = async (token, snippetID) => {
     const url = `${snippetsRoute}/${snippetID}`;
 
     let response = await fetch(url, {
@@ -72,7 +72,7 @@ const deleteSnippet = async (token, snippetID) => {
     return response;
 }
 
-const getSnippets = async (token, projectID, snippetsProjectUrl) => {
+export const getSnippets = async (token, projectID, snippetsProjectUrl) => {
     const url = projectID ? `${snippetsRoute}/project/${projectID}` : snippetsProjectUrl;
 
     let response = await fetch(url, {
@@ -89,11 +89,4 @@ const getSnippets = async (token, projectID, snippetsProjectUrl) => {
     }
 
     return response;
-}
-
-module.exports ={
-    createSnippet,
-    updateSnippet,
-    deleteSnippet,
-    getSnippets
 }

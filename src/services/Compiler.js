@@ -1,4 +1,4 @@
-const compile = async (token, snippetsId, projectId, language = "c") => {
+export const compile = async (token, snippetsId, projectId, language = "c") => {
 
     const url = process.env.REACT_APP_BACK_URL + "/api/compiler";
 
@@ -19,8 +19,4 @@ const compile = async (token, snippetsId, projectId, language = "c") => {
     response = await response.json();
 
     return response;
-}
-
-module.exports ={
-    compile
 }

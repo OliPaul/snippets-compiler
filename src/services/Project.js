@@ -1,6 +1,6 @@
 const projectRoute = process.env.REACT_APP_BACK_URL + "/api/projects";
 
-const createProject = async (token, projectName, language) => {
+export const createProject = async (token, projectName, language) => {
     const url = projectRoute;
 
     const projectInfo = {
@@ -26,7 +26,7 @@ const createProject = async (token, projectName, language) => {
     return response;
 }
 
-const getProject = async (token, projectID, projectUrl) => {
+export const getProject = async (token, projectID, projectUrl) => {
     const url = projectID ? `${projectRoute}/${projectID}` : projectUrl;
 
     let response = await fetch(url, {
@@ -45,7 +45,7 @@ const getProject = async (token, projectID, projectUrl) => {
     return response;
 }
 
-const joinProject = async (token, projectToken) => {
+export const joinProject = async (token, projectToken) => {
     const url = `${projectRoute}/join/${projectToken}`;
 
     let response = await fetch(url, {
@@ -64,7 +64,7 @@ const joinProject = async (token, projectToken) => {
     return response;
 }
 
-const getProjects = async (token) => {
+export const getProjects = async (token) => {
     const url = projectRoute + "/me";
 
     let response = await fetch(url, {
@@ -81,11 +81,4 @@ const getProjects = async (token) => {
     }
 
     return response;
-}
-
-module.exports ={
-    createProject,
-    getProject,
-    joinProject,
-    getProjects
 }

@@ -1,6 +1,6 @@
 const authRoute = process.env.REACT_APP_BACK_URL + "/api/auth";
 
-const signIn = async (credentials) => {
+export const signIn = async (credentials) => {
     const url = authRoute + "/signin";
 
     let response = await fetch(url, {
@@ -20,7 +20,7 @@ const signIn = async (credentials) => {
     return response;
 }
 
-const signUp = async (userInfo) => {
+export const signUp = async (userInfo) => {
     const url = authRoute + "/signup";
 
     let response = await fetch(url, {
@@ -38,9 +38,4 @@ const signUp = async (userInfo) => {
     }
 
     return response;
-}
-
-module.exports ={
-    signIn,
-    signUp
 }
