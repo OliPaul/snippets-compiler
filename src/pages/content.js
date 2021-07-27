@@ -1,58 +1,63 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {useRecoilState, useRecoilValue} from "recoil";
+import {useRecoilState} from "recoil";
 import {CodeAtom} from "../atoms/CodeAtom";
 import CodeEditor from "../components/CodeEditor";
 import Output from "../components/Output";
-import useToken from "../components/useToken";
-import {getSnippets} from "../services/Snippets";
 import {ProjectAtom} from "../atoms/ProjectAtom";
+import SockJsClient from "react-stomp";
 
 const Content = () => {
 
+    let SOCKET_URL = process.env.REACT_APP_BACK_URL + "/snippets";
     const [codeValue, setCodeValue] = useRecoilState(CodeAtom);
     const [projectString] = useRecoilState(ProjectAtom);
     const [codeBlocks, setCodeBlocks] = useState(codeValue);
-    const {token} = useToken();
-    const MINUTE_MS = 1500;
+    const [project, setProject] = useState("");
 
     useEffect(() => {
-        async function refreshCodeBlockState() {
-            if(projectString != "") {
-                const project = JSON.parse(projectString);
-                const response = await getSnippets(token, project.id, null);
-
-                if (response.error) {
-                    console.log("Cannot refresh state");
-                    return;
-                }
-
-                setCodeValue(response);
-            }
+        if (projectString !== "") {
+            setProject(JSON.parse(projectString));
         }
-
-        const interval = setInterval(() => {
-            refreshCodeBlockState();
-        }, MINUTE_MS);
-
-        return () => clearInterval(interval);
-    });
+    }, [projectString]);
 
     useEffect(() => setCodeBlocks(codeValue), [codeValue]);
 
+    const onMessageReceived = (msg) => {
+        setCodeValue(msg);
+    }
+
+    const onConnect = () => {
+        console.log("Connected!")
+    }
+
+    const onDisconnect = () => {
+        console.log("Disconnected!")
+    }
+
     return (
         <Fragment>
+            <div>
+                <SockJsClient
+                    url={SOCKET_URL}
+                    topics={["/listener/projects/" + project.id]}
+                    onConnect={onConnect}
+                    onDisconnect={onDisconnect}
+                    onMessage={msg => onMessageReceived(msg)}
+                    debug={false}
+                />
+            </div>
             <div className={'content'}>
                 <div className={'code-blocks-container'}>
                     {
                         codeBlocks.map((code) => (
-                            <CodeEditor key={code.id} code={code} />
+                            <CodeEditor key={code.id} code={code}/>
                         ))
                     }
                 </div>
                 <div className={'output-container'}>
                     {
-                        codeBlocks.length != 0 &&
-                        <Output />
+                        codeBlocks.length !== 0 &&
+                        <Output/>
                     }
                 </div>
             </div>

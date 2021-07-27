@@ -5,6 +5,7 @@ import Content from "./pages/content";
 import useToken from "./components/useToken";
 import DisplayProjectName from "./components/DisplayProjectName";
 
+
 function App() {
 
     const { token, setToken } = useToken();
@@ -19,6 +20,7 @@ function App() {
             <Header setToken={setToken} />
             <Content />
         </RecoilRoot>
+
     );
 }
 
