@@ -18,7 +18,8 @@ export const createProject = async (token, projectName, language) => {
         headers: {
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${token}`,
-            'Access-Control-Allow-Origin':  '*'
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
         },
         body: JSON.stringify(projectInfo),
     });
@@ -40,7 +41,8 @@ export const getProject = async (token, projectID, projectUrl) => {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${token}`,
-            'Access-Control-Allow-Origin':  '*'
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
         },
     });
 
@@ -61,7 +63,8 @@ export const joinProject = async (token, projectToken) => {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${token}`,
-            'Access-Control-Allow-Origin':  '*'
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
         },
     });
 
@@ -82,7 +85,8 @@ export const getProjects = async (token) => {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${token}`,
-            'Access-Control-Allow-Origin':  '*'
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
         },
     });
 

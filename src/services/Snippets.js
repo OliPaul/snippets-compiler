@@ -47,7 +47,9 @@ export const updateSnippet = async (token, snippetID, name, content, projectID) 
         headers: {
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${token}`,
-            'Access-Control-Allow-Origin':  '*'
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+
         },
         body: JSON.stringify(snippetInfo)
     });
@@ -69,7 +71,8 @@ export const deleteSnippet = async (token, snippetID) => {
         method: 'DELETE',
         headers: {
             "Authorization": `Bearer ${token}`,
-            'Access-Control-Allow-Origin':  '*'
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
         },
     });
 
