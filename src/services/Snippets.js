@@ -1,5 +1,10 @@
 const snippetsRoute = process.env.REACT_APP_BACK_URL + "/api/snippets";
 
+const https = require('https');
+const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+})
+
 export const createSnippet = async (token, name, content, projectID) => {
 
     const snippetInfo = {
@@ -10,6 +15,7 @@ export const createSnippet = async (token, name, content, projectID) => {
 
     let response = await fetch(snippetsRoute, {
         method: 'POST',
+        agent: httpsAgent,
         headers: {
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${token}`
@@ -37,6 +43,7 @@ export const updateSnippet = async (token, snippetID, name, content, projectID) 
 
     let response = await fetch(snippetsRoute, {
         method: 'PUT',
+        agent: httpsAgent,
         headers: {
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${token}`
@@ -57,6 +64,7 @@ export const deleteSnippet = async (token, snippetID) => {
     const url = `${snippetsRoute}/${snippetID}`;
 
     let response = await fetch(url, {
+        agent: httpsAgent,
         method: 'DELETE',
         headers: {
             "Authorization": `Bearer ${token}`
@@ -76,6 +84,7 @@ export const getSnippets = async (token, projectID, snippetsProjectUrl) => {
     const url = projectID ? `${snippetsRoute}/project/${projectID}` : snippetsProjectUrl;
 
     let response = await fetch(url, {
+        agent: httpsAgent,
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${token}`

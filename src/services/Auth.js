@@ -1,9 +1,15 @@
 const authRoute = process.env.REACT_APP_BACK_URL + "/api/auth";
+const https = require('https');
+
+const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+})
 
 export const signIn = async (credentials) => {
     const url = authRoute + "/signin";
 
     let response = await fetch(url, {
+        agent: httpsAgent,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -24,6 +30,7 @@ export const signUp = async (userInfo) => {
     const url = authRoute + "/signup";
 
     let response = await fetch(url, {
+        agent: httpsAgent,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -1,5 +1,9 @@
 const projectRoute = process.env.REACT_APP_BACK_URL + "/api/projects";
 
+const https = require('https');
+const httpsAgent = new https.Agent({
+    rejectUnauthorized: false,
+})
 export const createProject = async (token, projectName, language) => {
     const url = projectRoute;
 
@@ -10,6 +14,7 @@ export const createProject = async (token, projectName, language) => {
 
     let response = await fetch(url, {
         method: 'POST',
+        agent: httpsAgent,
         headers: {
             'Content-Type': 'application/json',
             "Authorization": `Bearer ${token}`
@@ -30,6 +35,7 @@ export const getProject = async (token, projectID, projectUrl) => {
     const url = projectID ? `${projectRoute}/${projectID}` : projectUrl;
 
     let response = await fetch(url, {
+        agent: httpsAgent,
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${token}`
@@ -49,6 +55,7 @@ export const joinProject = async (token, projectToken) => {
     const url = `${projectRoute}/join/${projectToken}`;
 
     let response = await fetch(url, {
+        agent: httpsAgent,
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${token}`
@@ -68,6 +75,7 @@ export const getProjects = async (token) => {
     const url = projectRoute + "/me";
 
     let response = await fetch(url, {
+        agent: httpsAgent,
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${token}`
