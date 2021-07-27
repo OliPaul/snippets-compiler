@@ -46,7 +46,10 @@ export const updateSnippet = async (token, snippetID, name, content, projectID) 
         agent: httpsAgent,
         headers: {
             'Content-Type': 'application/json',
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
+
         },
         body: JSON.stringify(snippetInfo)
     });
@@ -67,7 +70,9 @@ export const deleteSnippet = async (token, snippetID) => {
         agent: httpsAgent,
         method: 'DELETE',
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
         },
     });
 
@@ -87,7 +92,8 @@ export const getSnippets = async (token, projectID, snippetsProjectUrl) => {
         agent: httpsAgent,
         method: 'GET',
         headers: {
-            "Authorization": `Bearer ${token}`
+            "Authorization": `Bearer ${token}`,
+            'Access-Control-Allow-Origin':  '*'
         },
     });
 

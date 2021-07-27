@@ -19,7 +19,9 @@ export const compile = async (token, snippetsId, projectId, language = "c") => {
         agent: httpsAgent,
         headers: {
             "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            'Access-Control-Allow-Origin':  '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS'
         },
         body: JSON.stringify(compilationData),
     });
