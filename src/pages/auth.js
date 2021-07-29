@@ -15,10 +15,10 @@ const Auth = ({setToken}) => {
         <Fragment>
             <div className={'content'}>
                 <div className={'form-content'}>
-                    <h2 className={'title'}>
-                        Snippets Compiler
+                    <div className={'title'}>
+                        <img src={"Logo_allonge.png"} height={50} />
                         <span>{signupPage ? 'Sign up' : 'Login'}</span>
-                    </h2>
+                    </div>
                     {signupPage ?
                             <Fragment>
                                 <Signup onSuccess={handleSignUpSuccess} />
