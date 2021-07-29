@@ -47,7 +47,7 @@ const Header = ({setToken}) => {
                     font-family: IBM;
                     font-size: 20px;
                     letter-spacing: 2px;
-                    background-color: #77b6c7;
+                    background-color: #D0D1E1;
                 }
                 
                 .title {
