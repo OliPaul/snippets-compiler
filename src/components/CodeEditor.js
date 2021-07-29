@@ -224,8 +224,8 @@ const CodeEditor = ({key, code}) => {
                         showGutter={true}
                         highlightActiveLine={true}
                         setOptions={{
-                            enableBasicAutocompletion: false,
-                            enableLiveAutocompletion: false,
+                            enableBasicAutocompletion: true,
+                            enableLiveAutocompletion: true,
                             enableSnippets: false,
                             showLineNumbers: true,
                             tabSize: 4,
